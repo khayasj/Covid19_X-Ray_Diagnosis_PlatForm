@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.ipynb_checkpoints/
+.env
+.env.*
+
+# Virtual environment
+venv/
+env/
+.venv/
+ENV/
+
+# Jupyter Notebook
+*.ipynb_checkpoints
+
+# PyTorch model files
+*.pt
+*.pth
+*.h5
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules (if any frontend uses it)
+node_modules/
+
+# PHP session/temp files
+*.log
+*.tmp
+*.cache
+
+# IDEs
+.vscode/
+.idea/
+
+# MongoDB dump
+dump/
+*.bson
+*.json
+
+# Hugging Face / FastAPI
+/data/
+__results__/
+
+# Composer dependencies (if using PHP Composer)
+vendor/
+
+# Gradio cached files
+gradio_cached_examples/
+
+# Misc
+*.bak
