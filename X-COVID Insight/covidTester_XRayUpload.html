@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-COVID Insight | Diagnostic Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <script type="module">
+        import { Client } from "https://esm.sh/@gradio/client";
+        window.GradioClient = Client;
+    </script>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+
+<!-- Navigation Bar (Enhanced) -->
+<header class="sticky top-0 flex items-center justify-between px-8 py-4 border-b backdrop-blur-lg bg-white/90 shadow-sm">
+    <!-- Logo Section -->
+    <div class="flex items-center space-x-3">
+        <i class="fas fa-virus text-2xl text-purple-600 animate-pulse"></i>
+        <a href="covidTester_Homepage.php" class="text-xl font-bold text-gray-800 hover:text-purple-600 transition-colors">
+            X-COVID Insight
+        </a>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="hidden md:flex space-x-4 ml-12">
+        <a href="covidTester_ViewAllPatients.php" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-all flex items-center">
+            <i class="fas fa-clipboard-list mr-2"></i>
+            Patient Records
+        </a>
+        <a href="covidTester_registerPatient.php" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-all flex items-center">
+            <i class="fas fa-user-plus mr-2"></i>
+            Register Patient
+        </a>
+    </nav>
+
+    <!-- Profile & Logout -->
+    <div class="flex items-center space-x-6">
+        <a href="covidTester_Homepage.php" class="group relative">
+            <img src="assets/images/covidTesterProfilePicture.png" 
+                 class="w-10 h-10 rounded-full object-cover cursor-pointer border-2 border-purple-200 hover:border-purple-400 transition-all">
+        </a>
+        <a href="logout.php" class="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 text-white hover:from-purple-700 hover:to-blue-600 transition-all shadow-lg hover:shadow-purple-200">
+            Logout <i class="fas fa-sign-out-alt ml-2"></i>
+        </a>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header Section -->
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">X-ray Analysis Portal</h1>
+            <p id="patientInfo" class="text-gray-600">Upload chest X-ray images for instant COVID-19 detection</p>
+        </div>
+
+        <!-- Upload Card -->
+        <div class="bg-white rounded-xl shadow-2xl border border-gray-100 p-6 mb-8 transition-all hover:shadow-lg">
+            <div class="space-y-6">
+                <!-- Drag & Drop Zone -->
+                <div class="h-64 relative border-2 border-dashed border-gray-200 rounded-xl p-8 text-center group transition-colors hover:border-red-200"
+                    id="dropZone">
+
+                <div class="max-w-xs mx-auto pointer-events-none">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-red-600 mb-4 opacity-80 group-hover:opacity-100 transition-opacity"></i>
+                    <p class="text-gray-600 mb-2">Drag & drop X-ray image</p>
+                    <p class="text-sm text-gray-400">or</p>
+                </div>
+
+                <label for="imageInput"
+                        class="absolute bottom-4 left-4 py-2 px-4 rounded-lg text-sm font-semibold bg-gradient-to-r from-red-600 to-blue-500 text-white hover:opacity-90 transition-opacity cursor-pointer">
+                    Choose File
+                </label>
+                <input type="file" id="imageInput" accept="image/*" class="hidden">
+                </div>
+
+                <!-- Image Preview -->
+                <div class="relative overflow-hidden rounded-xl bg-gray-50 border border-gray-200 transition-all" id="previewContainer">
+                    <img id="preview" alt="Preview" 
+                         class="hidden min-h-[256px] w-full h-64 object-contain p-4">
+                    <div class="absolute top-2 right-2 z-10" id="previewOverlay">
+                        <button class="text-red-600 hover:text-red-700" onclick="clearImage()">
+                            <i class="fas fa-times-circle text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analysis Controls -->
+                <div class="flex flex-col space-y-4">
+                    <button onclick="analyzeImage()" 
+                            class="w-full py-3.5 bg-gradient-to-r from-red-600 to-blue-500 text-white rounded-lg 
+                                   hover:opacity-90 transition-opacity flex items-center justify-center
+                                   disabled:opacity-50 disabled:cursor-not-allowed"
+                            id="analyzeBtn">
+                        <i class="fas fa-microscope mr-2"></i>
+                        Analyze Image
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div id="result" class="hidden bg-white rounded-xl shadow-lg border border-gray-100 p-6 transition-all">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Analysis Report</h3>
+                <button onclick="toggleResultDetails()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            
+            <div id="resultContent" class="space-y-4">
+                <div class="flex items-center space-x-4">
+                    <div id="statusIcon" class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600"></i>
+                    </div>
+                    <div>
+                        <p id="diagnosis" class="text-xl font-bold"></p>
+                        <p id="confidence" class="text-gray-600"></p>
+                    </div>
+                </div>
+                
+                <!-- Detailed Results -->
+                <div id="detailedResults" class="hidden border-t border-gray-100 pt-4 mt-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <p class="text-sm text-gray-500">Image Resolution</p>
+                            <p class="font-medium" id="resolution">-</p>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-sm text-gray-500">Analysis Time</p>
+                            <p class="font-medium" id="analysisTime">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Return button-->
+        <div class="mt-4 text-center">
+            <a id = 'returnButton' href="covidTester_registerPatient.php"
+            class="hidden px-4 py-2 rounded-lg bg-gradient-to-r from-red-600 to-blue-500 text-white hover:from-purple-700 hover:to-blue-600 transition-all shadow-lg hover:shadow-purple-200">
+                Return to Register Patient
+            </a>
+        </div>
+    </div>
+</main>
+
+<script type="module">
+    const imageInput = document.getElementById("imageInput");
+    const preview = document.getElementById("preview");
+    const overlay = document.getElementById("previewOverlay");
+    const dropZone = document.getElementById("dropZone");
+    let droppedFile = null;
+
+    dropZone.addEventListener("dragover", e => {
+        e.preventDefault();
+        dropZone.classList.add("border-red-300");
+    });
+
+    dropZone.addEventListener("dragleave", e => {
+        dropZone.classList.remove("border-red-300");
+    });
+
+    dropZone.addEventListener("drop", e => {
+        e.preventDefault();
+        dropZone.classList.remove("border-red-300");
+
+        const files = e.dataTransfer.files;
+        if (!files.length) return;
+
+        droppedFile = files[0];
+        previewImage(droppedFile);
+    });
+
+    imageInput.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        droppedFile = null;
+        previewImage(file);
+    });
+
+
+    
+    import { Client } from "https://esm.sh/@gradio/client";
+    window.GradioClient = Client;
+
+    let currentPatientId = null;
+    const urlParams = new URLSearchParams(window.location.search);
+    currentPatientId = urlParams.get('patient_id');
+    let client = null;
+
+    window.onload = async () => {
+        try {
+            client = await GradioClient.connect("JobenTan/XRayModelV5");
+            console.log("Connected to Gradio API");
+
+        } catch (error) {
+            console.error("Connection error:", error);
+            showError("Failed to connect to analysis service.");
+        }
+    };
+
+    async function readFileAsDataURL(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    async function analyzeImage() {
+        if (!client) {
+            showError("Gradio AI model is not connected. Please refresh and try again.");
+            return;
+        }
+        const file = droppedFile || imageInput.files[0];
+
+        const fileInput = document.getElementById("imageInput");
+        const analyzeBtn = document.getElementById("analyzeBtn");
+        const startTime = Date.now();
+
+        if (!currentPatientId || !file) {
+            showError(currentPatientId ? "Please select an X-ray image" : "Please select a patient first");
+            return;
+        }
+
+        try {
+            document.getElementById("previewOverlay").style.display = "none";
+            analyzeBtn.disabled = true;
+            analyzeBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Analyzing...`;
+
+            // Process image and create API parameters
+            const imageDataUrl = await readFileAsDataURL(file);
+            
+            const imageParam = {
+                path: null,
+                url: imageDataUrl,
+                size: file.size,
+                orig_name: file.name,
+                mime_type: file.type,
+                is_stream: false,
+                meta: {}
+            };
+
+            // Make API call
+            const response = await client.predict("/predict", [imageParam]);
+            
+            const [prediction, confidence] = response.data;
+            const isPositive = prediction.includes("COVID");
+            const originalBase64 = await readFileAsDataURL(file);
+           
+            const formData = new FormData();
+            formData.append('patientId', currentPatientId);
+            formData.append('prediction', prediction);
+            formData.append('confidence', confidence);
+            formData.append('originalImage', originalBase64);
+
+            // Save record
+            const saveResponse = await fetch('save_xray_record.php', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            });
+
+            if (!saveResponse.ok) {
+                const errorData = await saveResponse.json();
+                throw new Error(errorData.error || 'Failed to save record');
+            }
+            const saveData = await saveResponse.json();
+            const wasSampled = saveData.needsReview;
+
+            if (!saveResponse.ok) {
+                const errorData = await saveResponse.json();
+                throw new Error(errorData.error || 'Failed to save record');
+            }
+
+            // Update results display
+            updateResultsUI({
+                prediction,
+                confidence,
+                isPositive,
+                wasSampled,
+                analysisTime: Date.now() - startTime
+            });
+
+        } catch (error) {
+            console.error("Analysis error:", error);
+            showError(`Analysis failed: ${error.message}`);
+        } finally {
+            analyzeBtn.innerHTML = `<i class="fas fa-microscope mr-2"></i> Analysis Complete`;
+        }
+    }
+    window.analyzeImage = analyzeImage;
+
+    function updateUIElements(prediction, confidence, isPositive, startTime) {
+        document.getElementById('diagnosis').textContent = prediction;
+        document.getElementById('confidence').textContent = `Confidence: ${confidence}`;
+        document.getElementById('analysisTime').textContent = 
+            `${((Date.now() - startTime) / 1000).toFixed(2)}s`;
+
+        const statusIcon = document.getElementById('statusIcon');
+        statusIcon.className = `w-12 h-12 rounded-full flex items-center justify-center 
+            ${isPositive ? 'bg-red-100' : 'bg-green-100'}`;
+        statusIcon.innerHTML = isPositive ? 
+            '<i class="fas fa-exclamation-triangle text-red-600"></i>' :
+            '<i class="fas fa-check-circle text-green-600"></i>';
+    }
+
+    function updateResultsUI({ prediction, confidence, isPositive, wasSampled, analysisTime }) {
+        const resultDiv = document.getElementById("result");
+        const diagnosisElement = document.getElementById('diagnosis');
+
+        resultDiv.classList.remove('hidden');
+
+        // Update confidence and time display
+        document.getElementById('analysisTime').textContent =
+            `${(analysisTime / 1000).toFixed(2)} seconds`;
+
+        // Update status icon
+        const statusIcon = document.getElementById('statusIcon');
+        statusIcon.className = `w-12 h-12 rounded-full flex items-center justify-center 
+            ${isPositive ? 'bg-red-100' : 'bg-green-100'}`;
+        statusIcon.innerHTML = isPositive ?
+            '<i class="fas fa-exclamation-triangle text-red-600"></i>' :
+            '<i class="fas fa-check-circle text-green-600"></i>';
+
+        let message = `
+            ${prediction}<br>
+            <span class="text-sm text-gray-600">
+                Confidence: ${confidence}<br>
+            </span>
+        `;
+
+        if (wasSampled) {
+            message += `<span class="text-sm text-yellow-600 font-medium block mt-1">
+                            Your image has been sent for doctor verification. If the diagnosis is updated, you will be notified via email.
+                        </span>`;
+        }
+
+        diagnosisElement.innerHTML = message;
+        document.getElementById("returnButton").classList.remove("hidden");
+
+    }
+
+    function showError(message) {
+        const resultDiv = document.getElementById("result");
+        resultDiv.classList.remove("hidden", "bg-red-50", "bg-green-50");
+        resultDiv.classList.add("bg-red-50");
+        document.getElementById("diagnosis").innerHTML = message;
+        document.getElementById("confidence").textContent = "";
+
+        const tempUrlElement = document.querySelector('#diagnosis a');
+        if (tempUrlElement) {
+            tempUrlElement.remove();
+        }
+    }
+
+    function clearImage() {
+        document.getElementById('imageInput').value = '';
+        document.getElementById('preview').src = '';
+        document.getElementById('preview').classList.add('hidden');
+        document.getElementById('previewOverlay').classList.add('hidden');
+        document.getElementById('dropZone').classList.remove('hidden'); 
+    }
+    window.clearImage = clearImage;
+
+    function toggleResultDetails() {
+        const details = document.getElementById('detailedResults');
+        const btn = document.querySelector('#result button');
+        details.classList.toggle('hidden');
+        btn.innerHTML = details.classList.contains('hidden') ? 
+            '<i class="fas fa-chevron-down"></i>' : 
+            '<i class="fas fa-chevron-up"></i>';
+    }
+
+    function previewImage(file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            preview.src = event.target.result;
+            preview.classList.remove("hidden");
+            overlay.classList.remove("hidden");
+            dropZone.classList.add("hidden");
+        };
+        reader.readAsDataURL(file);
+    }
+
+</script>
+
+</body>
+</html>

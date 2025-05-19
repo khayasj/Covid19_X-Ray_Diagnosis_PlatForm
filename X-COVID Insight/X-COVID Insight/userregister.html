@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - X-COVID Insight</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <!-- Navbar Section -->
+    <header class="flex items-center justify-between p-4 border-b bg-white shadow-md">
+        <div class="flex items-center space-x-2">
+            <i class="fas fa-virus text-2xl text-blue-600"></i>
+            <span class="text-2xl font-semibold text-blue-600">X-COVID Insight</span>
+        </div>
+        <nav class="flex space-x-4 ml-auto">
+            <a href="homepage.php" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-200 transition">Product</a>
+            <a href="pricing.php" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-200 transition">Pricing</a>
+            <a href="faq.php" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-200 transition">FAQ</a>
+            <a href="contact.html" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-200 transition">Contact</a>
+            <a href="about.php" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-200 transition">About</a>
+        </nav>
+        <!-- Sign In Button -->
+        <a href="loginPage.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 ml-4">Sign In</a>
+        <!-- Register Button -->
+        <a href="userregister.html" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 ml-4">Register</a>
+    </header>
+
+    <section id="register" class="py-16 px-8">
+        <div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="text-4xl font-bold text-center text-blue-600 mb-8">Create Your Account</h1>
+            <form id="registrationForm" action="userregister.php" method="POST" enctype="multipart/form-data">
+                <div class="mb-6">
+                    <label for="userType" class="block text-lg font-medium text-gray-700">Select User Type</label>
+                    <select name="userType" id="userType" class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mt-2" onchange="toggleForms()">
+                        <option value="test_center">Test Centre</option>
+                        <option value="patient">Patient</option>
+                    </select>
+                </div>
+
+                <!-- Test Centre Form -->
+                <div id="testCenterForm" class="hidden">
+                    <label for="testCenterName" class="block text-lg font-medium text-gray-700">Test Center Name</label>
+                    <input type="text" name="testCenterName" id="testCenterName" class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4">
+
+                    <label for="email" class="block text-lg font-medium text-gray-700">Email</label>
+                    <div class="flex gap-2">
+                        <input type="email" name="email" class="flex-1 border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600" 
+                               id="emailTestCenter" required />
+                        <button type="button" onclick="sendVerificationCode('test_center')" 
+                                class="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700">Send Code</button>
+                    </div>
+
+                    <div id="verificationSectionTestCenter" class="hidden mb-6">
+                        <label for="verificationCode" class="block text-lg font-medium text-gray-700">Verification Code</label>
+                        <div class="flex gap-2">
+                            <input type="text" name="verificationCode" id="verificationCodeTestCenter" 
+                                    class="w-1/2 border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600" required />
+                            <span id="verificationHint" class="hidden text-red-600 text-base font-semibold self-center"></span>
+                        </div>
+                    </div>
+                
+                    <label for="testers" class="block text-lg font-medium text-gray-700">Number of Testers</label>
+                    <input type="number" name="testers" class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4" id="testersTestCenter" />
+                
+                    <label for="hbp" class="block text-lg font-medium text-gray-700">HBP Registration No.</label>
+                    <input type="text" name="hbp" class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4" id="hbpTestCenter" />
+                
+                    <label for="uen" class="block text-lg font-medium text-gray-700">UEN No.</label>
+                    <input type="text" name="uen" class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4" id="uenTestCenter" />
+
+                    <!-- Add this after the UEN field -->
+                    <label for="postal_code" class="block text-lg font-medium text-gray-700">Postal Code</label>
+                    <input type="text" name="postal_code" id="postal_code" 
+                           class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4">
+
+                    <label for="street_address" class="block text-lg font-medium text-gray-700">Street Address</label>
+                    <input type="text" name="street_address" id="street_address" 
+                            class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4" 
+                            readonly>
+
+                    <label for="unit_number" class="block text-lg font-medium text-gray-700">Unit Number</label>
+                    <input type="text" name="unit_number" id="unit_number" 
+                            class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4">
+                
+                    <label for="subscription_plan" class="block text-lg font-medium text-gray-700">Preferred Subscription Plan</label>
+                    <select name="subscription_plan" class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4" id="subscriptionPlanTestCenter">
+                        <option value="basic">Basic</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                
+                    <label for="billing_plan" class="block text-lg font-medium text-gray-700">Billing Plan</label>
+                    <div class="flex space-x-4 mb-6">
+                        <label class="flex items-center"><input type="radio" name="billing_plan" value="1_month" id="billingPlan1MonthTestCenter" /> 1 month</label>
+                        <label class="flex items-center"><input type="radio" name="billing_plan" value="6_months" id="billingPlan6MonthsTestCenter" /> 6 months</label>
+                        <label class="flex items-center"><input type="radio" name="billing_plan" value="1_year" id="billingPlan1YearTestCenter" /> 1 year</label>
+                    </div>
+                
+                    <label for="hpb_certification" class="block text-lg font-medium text-gray-700">Upload HPB Certification (Max: 8MB)</label>
+                    <input type="file" name="hpb_certification" class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-6" id="hpbCertificationTestCenter" />
+                </div>
+                
+
+                <!-- Patient Form -->
+                <div id="patientForm" class="hidden">
+                    <label for="name" class="block text-lg font-medium text-gray-700">Patient Name</label>
+                    <input type="text" name="name" class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4" id="namePatient" />
+
+                    <label for="email" class="block text-lg font-medium text-gray-700">Email</label>
+                    <div class="flex gap-2">
+                        <input type="email" name="email" class="flex-1 border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600" 
+                            id="emailPatient" required />
+                        <button type="button" onclick="sendVerificationCode('patient')" 
+                                class="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700">Send Code</button>
+                    </div>
+
+                    <div id="verificationSectionPatient" class="hidden mb-6">
+                        <label for="verificationCode" class="block text-lg font-medium text-gray-700">Verification Code</label>
+                        <div class="flex gap-2">
+                            <input type="text" name="verificationCode" id="verificationCodePatient" 
+                                    class="w-1/2 border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600" required />
+                            <span id="verificationHint" class="hidden text-red-600 text-base font-semibold self-center"></span>
+                        </div>
+                    </div>
+
+                    <!-- Add after Email field in Patient Form -->
+                    <label for="password" class="block text-lg font-medium text-gray-700">Password</label>
+                    <input type="password" name="password" 
+                        class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4" 
+                        id="passwordPatient">
+
+                    <label for="phone" class="block text-lg font-medium text-gray-700">Phone</label>
+                    <input type="text" name="phone" class="w-full border p-3 rounded-lg shadow-md focus:ring-2 focus:ring-blue-600 mb-4" id="phonePatient" />
+
+                    <label class="block text-gray-700 font-semibold mb-1">Date of Birth</label>
+                    <input type="date" name="dob" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:border-black" id="dobPatient">
+
+                    <label for="gender" class="block text-lg font-medium text-gray-700">Gender</label>
+                    <div class="flex space-x-4 mb-4" id="genderContainer">
+                        <label class="flex items-center">
+                            <input type="radio" name="gender" value="male" class="mr-1"> Male
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="gender" value="female" class="mr-1"> Female
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="gender" value="other" class="mr-1"> Other
+                        </label>
+                    </div>
+                </div>
+
+
+                <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 mt-4">Submit</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                    <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-2">Success!</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500" id="successMessage"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Initialize Flatpickr
+        flatpickr("#dobPatient", {
+            dateFormat: "Y-m-d",
+            maxDate: "today",
+            allowInput: true,
+        });
+    
+        // Form submission handler
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const userType = document.getElementById("userType").value;
+        const emailField = userType === 'test_center' 
+            ? document.getElementById('emailTestCenter')
+            : document.getElementById('emailPatient');
+        const verificationSection = userType === 'test_center'
+            ? document.getElementById('verificationSectionTestCenter')
+            : document.getElementById('verificationSectionPatient');
+        const verificationCodeInput = userType === 'test_center'
+            ? document.getElementById('verificationCodeTestCenter')
+            : document.getElementById('verificationCodePatient');
+
+
+        // Check if email is filled
+        if (emailField.value.trim()) {
+            // Check if verification section is visible but code is empty
+            if (!verificationSection.classList.contains('hidden') && !verificationCodeInput.value.trim()) {
+                alert('Please enter the verification code sent to your email');
+                verificationCodeInput.focus();
+                return;
+            }
+            
+            // Check if verification section is hidden (not started)
+            if (verificationSection.classList.contains('hidden')) {
+                alert('Please verify your email first by clicking "Send Code"');
+                return;
+            }
+        }
+
+        // Check if street address is filled for test centers
+        if (userType === 'test_center' && !document.getElementById('street_address').value) {
+            alert('Please verify your postal code first');
+            return;
+        }
+
+        // Proceed with form submission
+        try {
+            const formData = new FormData(e.target);
+            const response = await fetch('userregister.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                document.getElementById('successMessage').textContent = result.message;
+                document.getElementById('successModal').classList.remove('hidden');
+                setTimeout(() => {
+                    window.location.href = 'loginPage.html';
+                }, 2000);
+            } else {
+                const userType = document.getElementById("userType").value;
+                const verificationHint = document.getElementById('verificationHint');
+
+                if (result.message.toLowerCase().includes("verification")) {
+                    showVerificationError(result.message);
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while submitting the form');
+        }
+    });
+
+        // Form toggle function
+        function toggleForms() {
+            const userType = document.getElementById("userType").value;
+            const testCenterForm = document.getElementById("testCenterForm");
+            const patientForm = document.getElementById("patientForm");
+
+            // Toggle main form visibility
+            testCenterForm.classList.toggle('hidden', userType !== 'test_center');
+            patientForm.classList.toggle('hidden', userType !== 'patient');
+
+            // Reset verification sections
+            const resetVerificationSection = (sectionId, emailFieldId) => {
+                const section = document.getElementById(sectionId);
+                const emailField = document.getElementById(emailFieldId);
+                
+                section.classList.add('hidden');
+                emailField.readOnly = false;  // Re-enable email field
+                section.querySelector('input').value = ''; // Clear verification code
+            };
+
+            resetVerificationSection('verificationSectionTestCenter', 'emailTestCenter');
+            resetVerificationSection('verificationSectionPatient', 'emailPatient');
+
+            // Toggle field attributes
+            const toggleFields = (form, shouldEnable) => {
+            const fields = form.querySelectorAll('input, select, textarea');
+            fields.forEach(field => {
+                // Handle radio buttons differently
+                if (field.type === 'radio') {
+                    field.disabled = !shouldEnable;
+                    if (!shouldEnable) field.checked = false;
+                } else {
+                    field.required = shouldEnable;
+                    field.disabled = !shouldEnable;
+                    if (!shouldEnable) field.value = '';
+                }
+            });
+        };
+
+            toggleFields(testCenterForm, userType === 'test_center');
+            toggleFields(patientForm, userType === 'patient');
+
+            // Special handling for postal code verification
+            if (userType === 'test_center') {
+                document.getElementById('postal_code').dispatchEvent(new Event('blur'));
+            }
+        }
+
+        // Initial form toggle
+        toggleForms();
+
+        // Postal code lookup functionality
+        // Modified postal code lookup functionality
+        document.getElementById('postal_code').addEventListener('blur', async function(e) {
+        const postalCode = this.value.trim();
+        const streetAddressInput = document.getElementById('street_address');
+
+
+        try {
+            // Correct API endpoint
+            const apiUrl = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${postalCode}&returnGeom=N&getAddrDetails=Y`;
+            
+            // Add API key (required)
+            const response = await fetch(apiUrl, {
+                headers: {
+                    // said to expire on 16 Apr
+                    'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ZTFmMjM1MDM5NmU5YmZlN2RkNjJlNmQzNTdjNjdiMyIsImlzcyI6Imh0dHA6Ly9pbnRlcm5hbC1hbGItb20tcHJkZXppdC1pdC1uZXctMTYzMzc5OTU0Mi5hcC1zb3V0aGVhc3QtMS5lbGIuYW1hem9uYXdzLmNvbS9hcGkvdjIvdXNlci9wYXNzd29yZCIsImlhdCI6MTc0NDUyMzk0NywiZXhwIjoxNzQ0NzgzMTQ3LCJuYmYiOjE3NDQ1MjM5NDcsImp0aSI6Incza2FicVdHdEJEakFydHMiLCJ1c2VyX2lkIjo2ODM1LCJmb3JldmVyIjpmYWxzZX0.eldewi1weuQ2q2UGipr0YVw6e80OKY8j8rgi1BxH5gw' // Get from https://www.onemap.gov.sg/
+                }
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+            const data = await response.json();
+            
+            if (data.results.length > 0) {
+                streetAddressInput.value = data.results[0].ADDRESS;
+            } else {
+                streetAddressInput.value = '';
+                alert('No address found for this postal code');
+            }
+        } catch (error) {
+            console.error('Postal code lookup error:', error);
+        }
+    });
+
+        // Prevent form submission when pressing Enter in postal code field
+        document.getElementById('postal_code').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.blur(); // Trigger the blur event instead
+            }
+        });
+
+        let countdownTimer = null;
+
+    function sendVerificationCode(userType) {
+        const emailField = userType === 'test_center' 
+            ? document.getElementById('emailTestCenter') 
+            : document.getElementById('emailPatient');
+        const sendButton = emailField.nextElementSibling;
+        const email = emailField.value.trim();
+
+        if (!email) {
+            alert('Please enter your email address');
+            return;
+        }
+
+        fetch('send_verification.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `email=${encodeURIComponent(email)}`,
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Show verification section
+                const sectionId = userType === 'test_center' 
+                    ? 'verificationSectionTestCenter' 
+                    : 'verificationSectionPatient';
+                document.getElementById(sectionId).classList.remove('hidden');
+                emailField.readOnly = true;
+
+                // Disable button and start countdown
+                startCountdown(sendButton, 60);
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to send verification code');
+        });
+    }
+
+    function startCountdown(button, duration) {
+        let remaining = duration;
+
+        button.disabled = true;
+        button.textContent = `Resend in ${remaining}s`;
+
+        countdownTimer = setInterval(() => {
+            remaining--;
+            if (remaining <= 0) {
+                clearInterval(countdownTimer);
+                button.disabled = false;
+                button.textContent = 'Send Code';
+            } else {
+                button.textContent = `Resend in ${remaining}s`;
+            }
+        }, 1000);
+    }
+    function showVerificationError(message) {
+        const hint = document.getElementById('verificationHint');
+        hint.textContent = message;
+        hint.classList.remove('hidden');
+    }
+
+    function resendVerificationCode() {
+        const userType = document.getElementById('userType').value;
+        sendVerificationCode(userType);
+    }
+    </script>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</body>
+</html>

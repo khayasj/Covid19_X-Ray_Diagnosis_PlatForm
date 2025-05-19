@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - X-COVID Insight</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensures body takes full height */
+            padding-top: 80px; /* Adjusts for the fixed navbar */
+        }
+
+        /* Navbar Styles */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: white;
+            z-index: 1000;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Container to vertically center content */
+        .content {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Login Container */
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        .login-container input,
+        .login-container select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-container a {
+            display: block;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #dc2626;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #fecaca;
+            border-radius: 5px;
+            background-color: #fef2f2;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto; /* Ensures footer is pushed to the bottom */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar Section -->
+<header class="flex items-center justify-between p-4 border-b bg-white shadow-md">
+    <div class="flex items-center space-x-2">
+        <i class="fas fa-virus text-2xl text-blue-600"></i>
+        <span class="text-2xl font-semibold text-blue-600">X-COVID Insight</span>
+    </div>
+    <nav class="flex space-x-4 ml-auto">
+        <a href="homepage.php" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-200 transition">Product</a>
+        <a href="pricing.php" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-200 transition">Pricing</a>
+        <a href="faq.php" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-200 transition">FAQ</a>
+        <a href="contact.html" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-200 transition">Contact</a>
+        <a href="about.php" class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-200 transition">About</a>
+    </nav>
+    <!-- Sign In Button -->
+    <a href="loginPage.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 ml-4">Sign In</a>
+    <!-- Register Button -->
+    <a href="userregister.html" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 ml-4">Register</a>
+</header>
+
+
+    <!-- Content Section for Login -->
+    <div class="content">
+        <div class="login-container">
+            <form action="login.php" method="POST">
+                <label>Email</label>
+                <input type="email" name="email" required />
+            
+                <label>Password</label>
+                <input type="password" name="password" required />
+            
+                <button type="submit">Sign in</button>
+            
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p class="text-sm">&copy; 2025 X-COVID Insight. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        const savedEmail = urlParams.get('email');
+    
+        // Display error if exists
+        if (error) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = decodeURIComponent(error);
+            
+            const form = document.querySelector('form');
+            form.parentNode.insertBefore(errorDiv, form);
+        }
+        
+        // Repopulate email field
+        if (savedEmail) {
+            document.querySelector('input[name="email"]').value = decodeURIComponent(savedEmail);
+        }
+    </script>
+
+</body>
+</html>
+
