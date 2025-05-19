@@ -1,9 +1,0 @@
-torch
-torchvision
-albumentations
-opencv-python
-pillow
-numpy
-gradio
-segmentation_models_pytorch
-matplotlib
