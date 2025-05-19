@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: xcovidinsight
+    runtime: php  # Changed from "env: php" to proper "runtime"
+    plan: free
+    region: us-west
+    branch: jobenb2bucketimplementation
+     # ADD/REPLACE THIS SECTION
+    buildCommand: |
+      curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+      composer install --no-dev --optimize-autoloader
+      ls -la vendor/aws/aws-sdk-php/src/S3
+    startCommand: php -S 0.0.0.0:$PORT -t public  # Changed ${PORT} to $PORT
+    autoDeploy: true
+    envVars:
+      # REMOVE EXPLICIT PORT - Render provides this automatically
+      - key: B2_KEY_ID
+        value: 005a48a20fd98310000000001
+      - key: B2_APP_KEY
+        value: K005lvwCD6OMDBizxB7q3RqueaS7CDE
+      - key: B2_BUCKET
+        value: x-covid-private
+      - key: B2_ENDPOINT
+        value: https://s3.us-east-005.backblazeb2.com
+      - key: B2_REGION
+        value: us-east-005  # Must match Backblaze's region code exactly
