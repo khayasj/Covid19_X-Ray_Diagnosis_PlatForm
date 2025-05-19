@@ -1,8 +1,0 @@
-fastapi
-uvicorn
-torch
-torchvision
-pillow
-scikit-learn
-segmentation-models-pytorch
-requests
