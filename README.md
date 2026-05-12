@@ -1,8 +1,8 @@
-# 🦠 X-COVID Insight — AI-Powered COVID-19 Chest X-Ray Diagnosis Platform
+# 🩻 X-COVID Insight — AI-Powered COVID-19 Chest X-Ray Diagnosis Platform
 
 A full-stack web application combining deep learning–based COVID-19 diagnosis with a multi-role clinic management system.
 
-## 🔍 Overview
+## Overview
 X-COVID Insight is designed to streamline COVID-19 testing and diagnosis by analyzing chest X-rays with deep learning models, reducing doctor workload, and automating feedback-driven model improvement. The platform supports multiple user roles and integrates real-world clinic workflows, from booking and image upload to AI diagnosis and incremental retraining.
 
 ## 🧠 AI Model Architecture
@@ -64,6 +64,24 @@ X-COVID Insight is designed to streamline COVID-19 testing and diagnosis by anal
 
 - **Login Credentials** → Located in `X-COVID Insight/Accounts.txt`  
   Stores default user credentials for login testing.
+
+## 📂 QA & Project Documentation
+
+To ensure reliability, scalability, and maintainability in a medical diagnostic environment, this project follows a structured **Software Development Life Cycle (SDLC)**. All requirement specifications, manuals, and testing artifacts are centralized in the [QA-Documentation-Suite](./QA-Documentation-Suite) folder.
+
+| Document | Description | Key Focus |
+| :--- | :--- | :--- |
+| **[Project Requirements Documentation](./QA-Documentation-Suite/Project%20Requirements%20Documentation.docx.pdf)** | Covers project overview, business model, research findings, use cases, risk analysis, and development strategy. | SDLC planning & product analysis. |
+| **[URS & SRS Documentation](./QA-Documentation-Suite/User%20Requirement%20Specification%20(URS_SRS).docx.pdf)** | Detailed functional and non-functional system requirements for all user roles and workflows. | System behavior, constraints, and specifications. |
+| **[Manual Test Case Suite](./QA-Documentation-Suite/Test%20Cases.xlsx)** | Comprehensive manual test cases covering all platform modules and user roles. | Functional testing, RBAC validation, and edge cases. |
+| **[User Manual](./QA-Documentation-Suite/User%20Manual.pdf)** | Step-by-step operational guide for Patients, Doctors, COVID Testers, and Admins. | User onboarding and workflow navigation. |
+
+### 🛠️ QA Methodology
+* **Role-Based Access Control (RBAC) Testing:** Verified secure permission handling across all 6 user roles.
+* **End-to-End Workflow Validation:** Tested the complete diagnostic pipeline from appointment booking to AI prediction and doctor validation.
+* **AI Confidence Threshold Testing:** Validated low-confidence prediction escalation and incremental retraining workflows.
+* **Manual Functional Testing:** Executed detailed test cases for UI behavior, workflows, validation rules, and system responses.
+* **Defect Reporting & Tracking:** Documented bugs with reproduction steps, severity levels, and developer hand-off notes.
 
 ## 📊 Key Features
 - **Real-Time AI Inference** via Gradio on Hugging Face Spaces
