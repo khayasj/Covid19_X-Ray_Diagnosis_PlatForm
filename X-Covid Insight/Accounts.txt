@@ -1,0 +1,32 @@
+X-COVID Insight — Public Demo Login Accounts
+================================================
+
+Demo password for all accounts: 0000
+
+These accounts are provided for project demonstration and testing only.
+
+TEST CENTRE ACCOUNTS
+- CCK@gmail.com
+- bedok@gmail.com
+- hougang@gmail.com
+- jurong@gmail.com
+- cityhall@gmail.com
+
+PATIENT ACCOUNTS
+- ethantan@gmail.com
+- nurulaisyah@gmail.com
+- jolenechua@gmail.com
+
+DOCTOR ACCOUNTS
+- drchua@gmail.com
+- drtan@gmail.com
+
+COVID TESTER ACCOUNTS
+- covidtestercck1@gmail.com
+- covidtestercck2@gmail.com
+- covidtesterbedok@gmail.com
+
+SYSTEM ADMIN ACCOUNT
+- systemadmin1@gmail.com
+
+Note: These are public demo credentials. Do not use the same password or accounts for any live, production, or personal service.
