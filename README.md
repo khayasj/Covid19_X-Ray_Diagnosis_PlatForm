@@ -1,4 +1,4 @@
-# X-COVID Insight — AI-Powered COVID-19 Chest X-Ray Diagnosis Platform
+# X-COVID Insight; AI-Powered COVID-19 Chest X-Ray Diagnosis Platform
 
 A six-month final-year project combining deep learning-based COVID-19 chest X-ray analysis with a multi-role clinic management platform.
 
