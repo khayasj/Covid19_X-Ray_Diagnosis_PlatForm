@@ -1,6 +1,17 @@
-<<<<<<< HEAD
+# Credentials and local configuration
+.env
+.env.*
+Accounts.txt
+config.local.php
+*.pem
+*.key
 
-=======
+# Logs and runtime files
+logs/
+*.log
+*.tmp
+*.cache
+
 # Python
 __pycache__/
 *.py[cod]
@@ -8,57 +19,25 @@ __pycache__/
 *.pyd
 *.so
 *.ipynb_checkpoints/
-.env
-.env.*
 
-# Virtual environment
+# Virtual environments and dependencies
 venv/
 env/
 .venv/
 ENV/
+node_modules/
+vendor/
 
-# Jupyter Notebook
-*.ipynb_checkpoints
-
-# PyTorch model files
-*.pt
-*.pth
-*.h5
-
-# Logs
-*.log
-
-# OS files
+# Local IDE and operating-system files
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
 
-# Node modules (if any frontend uses it)
-node_modules/
-
-# PHP session/temp files
-*.log
-*.tmp
-*.cache
-
-# IDEs
-.vscode/
-.idea/
-
-# MongoDB dump
+# Generated model and data files
+*.pt
+*.pth
+*.h5
 dump/
 *.bson
-*.json
-
-# Hugging Face / FastAPI
-/data/
-__results__/
-
-# Composer dependencies (if using PHP Composer)
-vendor/
-
-# Gradio cached files
 gradio_cached_examples/
-
-# Misc
-*.bak
->>>>>>> 833ddea27d18cc5e5f54f4c05204b4e47f2e79bd
