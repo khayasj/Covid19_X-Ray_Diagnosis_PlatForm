@@ -1,6 +1,6 @@
-# X-COVID Insight — Multi-role Clinic Workflow & Data Validation Platform
+# X-COVID Insight — Chest X-Ray Analysis & Clinic Workflow Platform
 
-An academic full-stack project combining an X-ray analysis demonstration with a clinic workflow platform. The work covers application features, role-based access, validation steps, documentation and functional testing.
+An academic final-year project combining a chest X-ray analysis demonstration with a multi-role clinic workflow platform. The project covers application development, model interpretation, role-based access, validation workflows, functional testing and technical documentation.
 
 ## Project scope
 
@@ -8,7 +8,8 @@ The platform demonstrates workflows for patients, doctors, COVID testers, test-c
 
 Key application areas include:
 - Appointment booking and patient record workflows
-- Image upload and AI prediction demonstration
+- Chest X-ray upload and CNN-based classification demonstration
+- Grad-CAM visualisations to help inspect which image regions influenced model predictions
 - Doctor review of low-confidence predictions
 - Role-based access across six user roles
 - Clinic administration, reporting and content management
@@ -22,14 +23,12 @@ Key application areas include:
 
 ## Important project note
 
-This is an academic project and demonstration. It is not a clinically validated diagnostic product and must not be used to make medical decisions.
-
-For security, test-account details, local configuration and runtime logs are not included in the repository. Set up local test accounts when running the project. Do not commit passwords, API keys, personal data or production credentials.
+This is an academic project and demonstration. It is not a clinically validated diagnostic product and must not be used to make medical decisions. Model outputs and Grad-CAM visualisations are for project demonstration and interpretation only.
 
 ## Technology
 
 - **Backend and APIs:** Python, FastAPI, PHP
-- **AI demonstration:** PyTorch, segmentation and classification models
+- **AI demonstration:** PyTorch, CNN classification, image segmentation and Grad-CAM
 - **Data:** MongoDB
 - **Frontend:** HTML, CSS, JavaScript and Tailwind CSS
 - **Deployment and services:** Hugging Face Spaces, Render and third-party APIs
